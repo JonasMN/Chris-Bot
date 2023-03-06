@@ -18,7 +18,7 @@ app.use(
   })
 );
 
-//app.use("/messenger", require("./Facebook/facebookBot"));
+app.use("/messenger", require("./Facebook/facebookBot"));
 
 app.get("/prueba", (req, res) => {
   return res.send("HOLA MUNDO");
