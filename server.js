@@ -2,7 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3000;
 
 // for parsing json
 app.use(
@@ -18,8 +18,11 @@ app.use(
   })
 );
 
-app.use("/messenger", require("./Facebook/facebookBot"));
+//app.use("/messenger", require("./Facebook/facebookBot"));
 
+app.get("/prueba", (req, res) => {
+  return res.send("HOLA MUNDO");
+});
 app.get("/", (req, res) => {
   return res.send("Chatbot Funcionando 🤖🤖🤖");
 });
