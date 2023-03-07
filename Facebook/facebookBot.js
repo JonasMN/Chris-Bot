@@ -8,6 +8,21 @@ const axios = require("axios");
 const config = require("../config");
 const dialogflow = require("../dialogflow");
 const { structProtoToJson } = require("./helpers/structFunctions");
+//const
+const QUICK_REPLY = [
+  {
+    image_url: "https://cms-assets.tutsplus.com/cdn-cgi/image/width=850/uploads/users/523/posts/32694/final_image/tutorial-preview-large.png",
+    payload: "si_acepto",
+    content_type: "text",
+    title: "Sí"
+  },
+  {
+    content_type: "text",
+    image_url: "https://cdn-icons-png.flaticon.com/512/753/753345.png",
+    payload: "no_acepto",
+    title: "No"
+  }
+];
 
 // Messenger API parameters
 if (!config.FB_PAGE_TOKEN) {
@@ -151,20 +166,7 @@ async function handleDialogFlowAction(
   contexts,
   parameters
 )
-const QUICK_REPLY = [
-  {
-    "image_url": "https://cms-assets.tutsplus.com/cdn-cgi/image/width=850/uploads/users/523/posts/32694/final_image/tutorial-preview-large.png",
-    "payload": "si_acepto",
-    "content_type": "text",
-    "title": "Sí"
-  },
-  {
-    "content_type": "text",
-    "image_url": "https://cdn-icons-png.flaticon.com/512/753/753345.png",
-    "payload": "no_acepto",
-    "title": "No"
-  }
-]
+
  {
   switch (action) {
     case "Codigo.quickReply.action":
