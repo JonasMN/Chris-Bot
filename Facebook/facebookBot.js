@@ -150,8 +150,26 @@ async function handleDialogFlowAction(
   messages,
   contexts,
   parameters
-) {
+)
+const QUICK_REPLY = [
+  {
+    "image_url": "https://cms-assets.tutsplus.com/cdn-cgi/image/width=850/uploads/users/523/posts/32694/final_image/tutorial-preview-large.png",
+    "payload": "si_acepto",
+    "content_type": "text",
+    "title": "Sí"
+  },
+  {
+    "content_type": "text",
+    "image_url": "https://cdn-icons-png.flaticon.com/512/753/753345.png",
+    "payload": "no_acepto",
+    "title": "No"
+  }
+]
+ {
   switch (action) {
+    case "Codigo.quickReply.action":
+      sendQuickReply(sender, "Quick Reply", QUICK_REPLY)
+      break;
     default:
       //unhandled action, just send back the text
       handleMessages(messages, sender);
