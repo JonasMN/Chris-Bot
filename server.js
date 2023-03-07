@@ -21,7 +21,7 @@ app.use(
 app.use("/messenger", require("./Facebook/facebookBot"));
 
 app.get("/prueba", (req, res) => {
-  return res.send("HOLA MUNDO");
+  return res.send("HOLA MUNDOO");
 });
 app.get("/", (req, res) => {
   return res.send("Chatbot Funcionando 🤖🤖🤖");
