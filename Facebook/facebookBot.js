@@ -25,6 +25,7 @@ const QUICK_REPLY = [
   },
 ];
 //mongoDb Models
+const Product = require("../models/products");
 const ChrisBotUser = require("../models/ChristBotUsers");
 
 // Messenger API parameters
@@ -136,8 +137,10 @@ async function receivedMessage(event) {
   }
 }
 async function saveUserData(facebookId) {
-  let isRegistered = await findOne({ facebookId });
-  if (isRegistered) return;
+  let isRegistered = await ChrisBotUser.findOne({ facebookId });
+  if (isRegistered) {
+    return;
+  }
   let userData = await getUserData(facebookId);
   let chrisBotUser = new ChrisBotUser({
     firstName: userData.first_name,
@@ -149,6 +152,7 @@ async function saveUserData(facebookId) {
     if (err) return console.log(err);
     console.log("Se creo un usuario:", res);
   });
+  return null;
 }
 
 function handleMessageAttachments(messageAttachments, senderId) {
@@ -186,6 +190,29 @@ async function handleDialogFlowAction(
   parameters
 ) {
   switch (action) {
+    case "Helado.info.action":
+      let icecreamName = parameters.fields.icecreamName.stringValue;
+      let icecreamInfo = await Product.findOne({ name: icecreamName });
+      sendGenericMessage(sender, [
+        {
+          title: icecreamInfo.name + " $" + icecreamInfo.price,
+          image_url: icecreamInfo.img,
+          subtitle: icecreamInfo.description,
+          buttons: [
+            {
+              type: "postback",
+              title: "Hacer compra",
+              payload: "hacer_compra",
+            },
+            {
+              type: "postback",
+              title: "Ver más helados",
+              payload: "ver_mas_helados",
+            },
+          ],
+        },
+      ]);
+      break;
     case "Code.boton-imagen.action":
       await sendTextMessage(sender, "estoy mandando una imagen y un boton");
       await sendImageMessage(
