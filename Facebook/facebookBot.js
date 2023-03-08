@@ -168,6 +168,18 @@ async function handleDialogFlowAction(
   parameters
 ) {
   switch (action) {
+    case "Code.boton-imagen.action":
+      sendTextMessage(sender,"estoy mandando una imagen y un boton");
+      sendImageMessage(sender,"https://pbs.twimg.com/media/FkbNNUYXkAMIn3F.jpg")
+      sendButtonMessage(sender,"ejemplo de boton",[
+        {
+          type: "",
+          url: "",
+          tittle: "",
+
+        }
+      ])
+      break
     case "Codigo.quickReply.action":
       let replies = [];
       for (let i = 1; i <= 5; i++) {
@@ -181,7 +193,7 @@ async function handleDialogFlowAction(
       }
       sendQuickReply(sender, "Quick Reply", replies);
       break;
-    case "Code.menuCarrusel":
+    case "Code.menuCarrusel.action":
       let helados = [
         {
           id: 1,
@@ -200,7 +212,7 @@ async function handleDialogFlowAction(
         {
           id: 3,
           nombre: "helado de dulce de leche",
-          img: "https://www.clarin.com/img/2019/10/11/helado-casero-una-opcion-riquisima___MdLwHWmS_340x340__1.jpg",
+          img: "https://img-global.cpcdn.com/recipes/ecf7a8effce828e8/1200x630cq70/photo.jpg",
           descripcion: "los helados de dulce de leche son muy ricos",
           precio: 100,
         },
@@ -211,7 +223,7 @@ async function handleDialogFlowAction(
           title: helado.nombre + " $" + helado.precio,
           image_url: helado.img,
           subtitle: helado.descripcion,
-          button: [
+          buttons: [
             {
               type: "postback",
               title: "Hacer Compra",
@@ -225,7 +237,7 @@ async function handleDialogFlowAction(
           ]
         });
       });
-      sendGenericMessage(sender, cards);
+      sendGenericMessage(sender,cards);
       break;
     default:
       //unhandled action, just send back the text
