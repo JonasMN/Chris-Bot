@@ -169,13 +169,13 @@ async function handleDialogFlowAction(
 ) {
   switch (action) {
     case "Code.boton-imagen.action":
-      sendTextMessage(sender,"estoy mandando una imagen y un boton");
-      sendImageMessage(sender,"https://pbs.twimg.com/media/FkbNNUYXkAMIn3F.jpg")
-      sendButtonMessage(sender,"ejemplo de boton",[
+      await sendTextMessage(sender,"estoy mandando una imagen y un boton");
+      await sendImageMessage(sender,"https://pbs.twimg.com/media/FkbNNUYXkAMIn3F.jpg")
+      await sendButtonMessage(sender,"ejemplo de boton",[
         {
-          type: "",
-          url: "",
-          tittle: "",
+          type: "web_url",
+          url: "https://google.com",
+          tittle: "boton de prueba",
 
         }
       ])
