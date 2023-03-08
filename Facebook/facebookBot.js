@@ -135,12 +135,13 @@ async function receivedMessage(event) {
     handleMessageAttachments(messageAttachments, senderId);
   }
 }
-function saveUserData(facebookId) {
+async function saveUserData(facebookId) {
+  let userData = await getUserData(facebookId);
   let chrisBotUser = new ChrisBotUser({
-    firstName: "",
-    lastName: "",
+    firstName: userData.first_name,
+    lastName: userData.last_name,
     facebookId,
-    profilePic: "",
+    profilePic: userData.profile_pic,
   });
   chrisBotUser.save((err, res) => {
     if (err) return console.log(err);
