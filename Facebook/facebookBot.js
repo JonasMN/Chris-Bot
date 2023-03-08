@@ -11,17 +11,18 @@ const { structProtoToJson } = require("./helpers/structFunctions");
 //const
 const QUICK_REPLY = [
   {
-    image_url: "https://cms-assets.tutsplus.com/cdn-cgi/image/width=850/uploads/users/523/posts/32694/final_image/tutorial-preview-large.png",
+    image_url:
+      "https://cms-assets.tutsplus.com/cdn-cgi/image/width=850/uploads/users/523/posts/32694/final_image/tutorial-preview-large.png",
     payload: "si_acepto",
     content_type: "text",
-    title: "Sí"
+    title: "Sí",
   },
   {
     content_type: "text",
     image_url: "https://cdn-icons-png.flaticon.com/512/753/753345.png",
     payload: "no_acepto",
-    title: "No"
-  }
+    title: "No",
+  },
 ];
 
 // Messenger API parameters
@@ -165,12 +166,66 @@ async function handleDialogFlowAction(
   messages,
   contexts,
   parameters
-)
-
- {
+) {
   switch (action) {
     case "Codigo.quickReply.action":
-      sendQuickReply(sender, "Quick Reply", QUICK_REPLY)
+      let replies = [];
+      for (let i = 1; i <= 5; i++) {
+        replies.push({
+          image_url:
+            "https://cms-assets.tutsplus.com/cdn-cgi/image/width=850/uploads/users/523/posts/32694/final_image/tutorial-preview-large.png",
+          payload: "si_acepto",
+          content_type: "text",
+          title: "Sí",
+        });
+      }
+      sendQuickReply(sender, "Quick Reply", replies);
+      break;
+    case "Code.menuCarrusel":
+      let helados = [
+        {
+          id: 1,
+          nombre: "helados de fresa",
+          img: "https://assets.unileversolutions.com/recipes-v2/231124.jpg",
+          descripcion: "los helados de fresa son muy ricos",
+          precio: 100,
+        },
+        {
+          id: 2,
+          nombre: "helados de oreo",
+          img: "https://chocorecetas.com/wp-content/uploads/2020/09/helado-de-Oreo-en-forma-de-paleta-receta-600x450.jpg",
+          descripcion: "los helados de oreo son muy ricos",
+          precio: 150,
+        },
+        {
+          id: 3,
+          nombre: "helado de dulce de leche",
+          img: "https://www.clarin.com/img/2019/10/11/helado-casero-una-opcion-riquisima___MdLwHWmS_340x340__1.jpg",
+          descripcion: "los helados de dulce de leche son muy ricos",
+          precio: 100,
+        },
+      ];
+      let cards = [];
+      helados.forEach((helado) => {
+        cards.push({
+          title: helado.nombre + " $" + helado.precio,
+          image_url: helado.img,
+          subtitle: helado.descripcion,
+          button: [
+            {
+              type: "postback",
+              title: "Hacer Compra",
+              payload: "hacer_compra"
+            },
+            {
+              type: "postback",
+              title: "Mas Helados",
+              payload: "mas_helados"
+            },
+          ]
+        });
+      });
+      sendGenericMessage(sender, cards);
       break;
     default:
       //unhandled action, just send back the text
