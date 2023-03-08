@@ -24,6 +24,8 @@ const QUICK_REPLY = [
     title: "No",
   },
 ];
+//mongoDb Models
+const ChrisBotUser = require("../models/ChristBotUsers");
 
 // Messenger API parameters
 if (!config.FB_PAGE_TOKEN) {
@@ -124,6 +126,7 @@ async function receivedMessage(event) {
     handleQuickReply(senderId, quickReply, messageId);
     return;
   }
+  saveUserData(senderId);
   if (messageText) {
     //send message to dialogflow
     console.log("MENSAJE DEL USUARIO: ", messageText);
@@ -131,6 +134,18 @@ async function receivedMessage(event) {
   } else if (messageAttachments) {
     handleMessageAttachments(messageAttachments, senderId);
   }
+}
+function saveUserData(facebookId) {
+  let chrisBotUser = new ChrisBotUser({
+    firstName: "",
+    lastName: "",
+    facebookId,
+    profilePic: "",
+  });
+  chrisBotUser.save((err, res) => {
+    if (err) return console.log(err);
+    console.log("Se creo un usuario:", res);
+  });
 }
 
 function handleMessageAttachments(messageAttachments, senderId) {
@@ -169,17 +184,19 @@ async function handleDialogFlowAction(
 ) {
   switch (action) {
     case "Code.boton-imagen.action":
-      await sendTextMessage(sender,"estoy mandando una imagen y un boton");
-      await sendImageMessage(sender,"https://pbs.twimg.com/media/FkbNNUYXkAMIn3F.jpg")
-      await sendButtonMessage(sender,"ejemplo de boton",[
+      await sendTextMessage(sender, "estoy mandando una imagen y un boton");
+      await sendImageMessage(
+        sender,
+        "https://pbs.twimg.com/media/FkbNNUYXkAMIn3F.jpg"
+      );
+      await sendButtonMessage(sender, "ejemplo de boton", [
         {
           type: "web_url",
           url: "https://google.com",
           tittle: "boton de prueba",
-
-        }
-      ])
-      break
+        },
+      ]);
+      break;
     case "Codigo.quickReply.action":
       let replies = [];
       for (let i = 1; i <= 5; i++) {
@@ -227,17 +244,17 @@ async function handleDialogFlowAction(
             {
               type: "postback",
               title: "Hacer Compra",
-              payload: "hacer_compra"
+              payload: "hacer_compra",
             },
             {
               type: "postback",
               title: "Mas Helados",
-              payload: "mas_helados"
+              payload: "mas_helados",
             },
-          ]
+          ],
         });
       });
-      sendGenericMessage(sender,cards);
+      sendGenericMessage(sender, cards);
       break;
     default:
       //unhandled action, just send back the text

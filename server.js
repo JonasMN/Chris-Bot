@@ -2,6 +2,8 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 
+const mongoose = require('mongoose');
+
 const port = process.env.PORT || 3000;
 
 // for parsing json
@@ -17,6 +19,19 @@ app.use(
     limit: "20mb",
   })
 );
+
+mongoose.connect(
+  'mongodb+srv://ChrisMeza:anterTEnDe10.@dialogflowcluster.sgfkayu.mongodb.net/?retryWrites=true&w=majority',
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+    useCreateIndex: true,
+  },(err,res)=>{
+    if (err) return console.log("hubo un error en la base de datos", err)
+    console.log('BASE DE DATOS ONLINE');
+  } 
+)
 
 app.use("/messenger", require("./Facebook/facebookBot"));
 
